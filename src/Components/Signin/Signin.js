@@ -1,21 +1,12 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView,Image } from 'react-native'
 import { TextInput } from 'react-native-paper';
+import { useState } from 'react';
 
 const Inputs = (()=>{
-   state = {
-      email: '',
-      password: ''
-   }
-   handleEmail = (text) => {
-      this.setState({ email: text })
-   }
-   handlePassword = (text) => {
-      this.setState({ password: text })
-   }
-   login = (email, pass) => {
-      alert('email: ' + email + ' password: ' + pass)
-   }
+const [mobilenumber,setmobilenumber]=useState();
+const [password,setpassword]=useState();
+const [stage,setstage]=useState(0)
      return (
       <SafeAreaView  style = {styles.container}>
           <View>
@@ -23,17 +14,22 @@ const Inputs = (()=>{
           </View>         
           <View style ={styles.innercontainerinput}>
             <TextInput style = {styles.input}
-               label="Mobile Number"
+               label={stage === 0 ? "Mobile Number" : "Password"}
                mode='outlined'
-               onChangeText = {this.handleEmail}/>
+               onChangeText = {stage===0? setmobilenumber: setpassword}/>
           </View>  
-          <View style={styles.buttoncontainer}>  
+          <View style={styles.buttoncontainer}>
+            {stage ===1 ?
           <TouchableOpacity
               style = {styles.submitButton}
-              onPress = {
-                () => this.login(this.state.email, this.state.password)
-              }>
-              <Text style = {styles.submitButtonText}> Continue </Text>
+              onPress = {()=>setstage(stage-1)}>
+              <Text style = {styles.submitButtonText}> Go Back </Text>
+          </TouchableOpacity> 
+          :<></>}   
+          <TouchableOpacity
+              style = {styles.submitButton}
+              onPress = {()=>setstage(stage+1)}>
+              <Text style = {styles.submitButtonText}>{stage===0 ?"Contnue" : 'Login' }</Text>
           </TouchableOpacity>
           </View> 
       </SafeAreaView>
@@ -47,6 +43,9 @@ const styles = StyleSheet.create({
       flex:1,
       justifyContent:'center',
       alignItems:'center'
+   },
+   number:{
+    color:'red'
    },
    image:{
 
